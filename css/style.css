@@ -238,8 +238,10 @@ button:disabled, .btn-disabled { opacity: 0.45; pointer-events: none; }
   justify-content: space-around;
   align-items: center;
   padding: 8px 16px;
-  background: rgba(0,0,0,0.25);
-  border-bottom: 1px solid rgba(100,120,200,0.15);
+  /* Phase 9: semi-transparent background for readability */
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(4px);
+  border-bottom: 1px solid rgba(100,120,200,0.2);
   flex-shrink: 0;
 }
 
@@ -272,8 +274,34 @@ button:disabled, .btn-disabled { opacity: 0.45; pointer-events: none; }
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  /* Phase 9: character slightly below centre */
+  justify-content: flex-end;
+  padding-bottom: 40px;
   position: relative;
+  overflow: hidden;
+}
+
+/* Phase 9: Full-screen background layer */
+.home-bg-layer {
+  position: absolute;
+  inset: 0;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat;
+  z-index: 0;
+}
+
+/* Phase 9: subtle dark gradient overlay for text legibility */
+.home-bg-layer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom,
+    rgba(0,0,0,0.2) 0%,
+    rgba(0,0,0,0.05) 40%,
+    rgba(0,0,0,0.3) 80%,
+    rgba(0,0,0,0.6) 100%
+  );
 }
 
 .home-char-art {
@@ -283,6 +311,7 @@ button:disabled, .btn-disabled { opacity: 0.45; pointer-events: none; }
   background: linear-gradient(135deg, #AA44FF, #4488FF);
   box-shadow: 0 0 40px rgba(160,80,255,0.4), inset 0 0 60px rgba(255,255,255,0.05);
   position: relative;
+  z-index: 1;
 }
 
 .home-char-art::after {
@@ -301,7 +330,9 @@ button:disabled, .btn-disabled { opacity: 0.45; pointer-events: none; }
   font-weight: 700;
   color: #e0e0ff;
   letter-spacing: 2px;
-  text-shadow: 0 0 8px rgba(160,80,255,0.6);
+  text-shadow: 0 0 8px rgba(160,80,255,0.6), 0 2px 6px rgba(0,0,0,0.8);
+  position: relative;
+  z-index: 1;
 }
 
 .home-actions {
@@ -309,6 +340,9 @@ button:disabled, .btn-disabled { opacity: 0.45; pointer-events: none; }
   gap: 12px;
   padding: 16px;
   width: 100%;
+  /* Phase 9: actions row at bottom, above nav */
+  position: relative;
+  z-index: 1;
 }
 
 .home-action-btn {
@@ -1674,11 +1708,33 @@ button:disabled, .btn-disabled { opacity: 0.45; pointer-events: none; }
   100% { transform: scale(1); }
 }
 
-/* ── Item 17: Toast exit animation ──────────────────────────────── */
+/* ── Item 17 / Phase 10: Toast slide-in/out + type colours ──────── */
 .toast.toast-exit {
   opacity: 0;
-  transform: translateX(-50%) translateY(12px);
+  transform: translateX(-50%) translateY(20px);
   transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Phase 10: Type-based colours */
+.toast.toast-success {
+  background: rgba(10, 40, 20, 0.95);
+  border-color: rgba(60, 200, 100, 0.5);
+  color: #88FFAA;
+}
+.toast.toast-error {
+  background: rgba(40, 10, 10, 0.95);
+  border-color: rgba(220, 60, 60, 0.5);
+  color: #FF8888;
+}
+.toast.toast-warn {
+  background: rgba(40, 28, 5, 0.95);
+  border-color: rgba(220, 150, 30, 0.5);
+  color: #FFBB55;
+}
+.toast.toast-info {
+  background: rgba(10, 20, 45, 0.95);
+  border-color: rgba(80, 140, 255, 0.4);
+  color: #AACCFF;
 }
 
 /* ── Item 18: Nav active indicator (bottom dot) ─────────────────── */
@@ -2116,6 +2172,176 @@ button:disabled, .btn-disabled { opacity: 0.45; pointer-events: none; }
   height: 100%;
   object-fit: cover;
   object-position: top center;
+  display: block;
+  border-radius: inherit;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Phase Three — UI Polish & Performance
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── Phase 3: SSR Gacha effects ──────────────────────────────────── */
+
+/* White flash overlay on gacha result panel */
+.gacha-flash-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0);
+  z-index: 50;
+  pointer-events: none;
+  border-radius: inherit;
+}
+.gacha-flash-overlay.gacha-flash-active {
+  animation: gacha-flash 0.4s ease forwards;
+}
+@keyframes gacha-flash {
+  0%   { background: rgba(255,255,255,0.0); }
+  15%  { background: rgba(255,255,255,0.75); }
+  100% { background: rgba(255,255,255,0.0); }
+}
+
+/* SSR card: enhanced golden glow border */
+.gacha-card.rarity-ssr {
+  border-color: #FFD700;
+  box-shadow:
+    0 0 18px rgba(255,215,0,0.8),
+    0 0 40px rgba(255,180,0,0.4),
+    inset 0 0 12px rgba(255,215,0,0.15);
+  animation: ssr-shine 0.5s ease forwards, ssr-glow-pulse 2s ease-in-out 0.5s infinite;
+}
+@keyframes ssr-glow-pulse {
+  0%, 100% { box-shadow: 0 0 18px rgba(255,215,0,0.8), 0 0 40px rgba(255,180,0,0.4); }
+  50%       { box-shadow: 0 0 28px rgba(255,215,0,1.0), 0 0 60px rgba(255,200,0,0.6); }
+}
+
+/* ★SSR★ label above the card */
+.gacha-card-ssr-label {
+  position: absolute;
+  top: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 10px;
+  font-weight: 900;
+  color: #FFD700;
+  text-shadow: 0 0 8px rgba(255,215,0,0.9);
+  white-space: nowrap;
+  letter-spacing: 1px;
+  animation: ssr-label-drop 0.4s ease 0.3s both;
+}
+@keyframes ssr-label-drop {
+  from { opacity: 0; transform: translateX(-50%) translateY(-6px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+/* Ensure the grid has enough top space to show the label */
+.gacha-result-grid {
+  padding-top: 22px;
+}
+
+/* ── Phase 4: Pity bar label ─────────────────────────────────────── */
+.gacha-pity-num {
+  font-size: 15px;
+  font-weight: 900;
+}
+
+/* ── Phase 5: Cleared stage row ──────────────────────────────────── */
+.stage-row.cleared {
+  opacity: 0.8;
+}
+.stage-row.cleared .stage-name {
+  color: #88AA88;
+}
+
+/* ── Phase 6: Character detail panel additions ───────────────────── */
+.detail-art-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  border-radius: inherit;
+  display: block;
+}
+
+.detail-skill-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: #FFDD88;
+  margin-bottom: 3px;
+}
+
+.detail-intimacy-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 0 4px;
+}
+.detail-intimacy-label {
+  font-size: 12px;
+  color: #8888aa;
+}
+.detail-intimacy-val {
+  font-size: 13px;
+  font-weight: 700;
+  color: #FF88AA;
+}
+
+.detail-upgrade-btn {
+  margin-top: 10px;
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 15px;
+}
+
+/* ── Phase 7: Battle top HUD bar ─────────────────────────────────── */
+.battle-top-hud {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 52px 0 14px; /* right padding leaves space for pause btn */
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(2px);
+  border-bottom: 1px solid rgba(100,120,200,0.2);
+  pointer-events: none;
+}
+
+.battle-hud-stage {
+  font-size: 13px;
+  font-weight: 700;
+  color: #e0e0ff;
+  letter-spacing: 1px;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+}
+
+.battle-hud-stam {
+  font-size: 12px;
+  color: #AADDFF;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+}
+
+/* Phase 7: Turn counter — large and prominent */
+.battle-turn-display {
+  position: absolute;
+  top: 50px;
+  left: 14px;
+  font-size: 22px;
+  font-weight: 900;
+  color: #FFD700;
+  text-shadow: 0 0 12px rgba(255,215,0,0.6), 0 2px 6px rgba(0,0,0,0.8);
+  pointer-events: none;
+  letter-spacing: 1px;
+  opacity: 0.9;
+}
+
+/* ── Phase 9: Home screen char art img ───────────────────────────── */
+.home-char-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: bottom center;
   display: block;
   border-radius: inherit;
 }

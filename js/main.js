@@ -69,9 +69,11 @@ function waitFrames(ms) {
  */
 function toast(ui, msg, level = 'info') {
   if (ui && typeof ui.showToast === 'function') {
-    // ui.showToast(message, durationMs) — map level to duration
+    // Phase 10: pass type for colour coding; map level → type
+    const typeMap = { info: 'info', warn: 'warn', error: 'error', success: 'success' };
+    const type     = typeMap[level] ?? 'info';
     const duration = level === 'error' ? 4000 : level === 'warn' ? 3000 : 2500;
-    ui.showToast(msg, duration);
+    ui.showToast(msg, duration, type);
   } else {
     console.warn('[Toast]', msg);
   }
@@ -131,6 +133,10 @@ export class GameController {
 
     /** Last timestamp from rAF loop (for stamina delta calc) */
     this._lastTimestamp  = 0;
+
+    /** Phase 8: FPS throttling for non-battle states */
+    this._lastDrawTime   = 0;
+    this._targetFps      = 60;  // default; adjusted per state
 
     /** Audio system */
     this.audio = new AudioManager();
@@ -356,8 +362,20 @@ export class GameController {
       }
     }
 
+    // Phase 8: Determine target FPS based on game state
+    if (this.state === 'BATTLE') {
+      // Animating = 60fps, waiting for input = 30fps
+      this._targetFps = this._animating ? 60 : 30;
+    } else {
+      // Non-battle menus = 15fps
+      this._targetFps = 15;
+    }
+    const minFrameMs = 1000 / this._targetFps;
+    const shouldDraw = (timestamp - this._lastDrawTime) >= minFrameMs;
+    if (shouldDraw) this._lastDrawTime = timestamp;
+
     // Render current screen
-    if (this.state === 'BATTLE' && this.board && this.battle && this.battle._battleStarted) {
+    if (shouldDraw && this.state === 'BATTLE' && this.board && this.battle && this.battle._battleStarted) {
       // Build display-friendly team/enemy data for renderer
       const ELEM_STR_TO_TYPE = { fire:'FIRE', water:'WATER', wood:'WOOD', light:'LIGHT', dark:'DARK' };
       // teamHp is the shared pool; distribute proportionally across members for display
@@ -399,7 +417,7 @@ export class GameController {
       );
       this.renderer.drawBoard(this.board.grid, selectedCell);
       this.renderer.drawDamageNumbers([]);
-    } else {
+    } else if (shouldDraw) {
       this.renderer.clear();
       this.renderer.drawBackground();
     }
@@ -486,18 +504,31 @@ export class GameController {
             const stats = c.getStats();
             const rarity = ['N','R','SR','SSR'][c.rarity] ?? 'R';
             return {
-              id:      c.id,
-              name:    c.name,
-              type:    ['FIRE','WATER','WOOD','LIGHT','DARK'][c.element] ?? 'FIRE',
+              id:              c.id,
+              name:            c.name,
+              type:            ['FIRE','WATER','WOOD','LIGHT','DARK'][c.element] ?? 'FIRE',
               rarity,
-              hp:      stats.hp,
-              atk:     stats.atk,
-              rcv:     stats.rcv,
-              level:   c.level,
-              skill:   c._data?.skillSpecial?.name ?? '—',
-              leader:  c._data?.leaderSkill?.description ?? '—',
-              portrait: c._data?.portrait ?? null,
-              icon:     c._data?.icon ?? null,
+              hp:              stats.hp,
+              atk:             stats.atk,
+              rcv:             stats.rcv,
+              level:           c.level,
+              // Normal attack
+              skillNormalName: c._data?.skillNormal?.name ?? '—',
+              // Super sense skill
+              skillName:       c._data?.skillSpecial?.name ?? '—',
+              skillDesc:       c._data?.skillSpecial?.name
+                                 ? `${c._data.skillSpecial.name}（充能：${c._data.skillSpecial.chargeNeeded ?? 15} 回）`
+                                 : '—',
+              chargeNeeded:    c._data?.skillSpecial?.chargeNeeded ?? 15,
+              // Leader skill
+              leaderName:      c._data?.leaderSkill?.name ?? '—',
+              leader:          c._data?.leaderSkill?.description ?? '—',
+              // Intimacy
+              intimacyLevel:   c.getIntimacyLevel?.() ?? 1,
+              // Upgrade
+              canUpgrade:      c.level < (c._data?.maxLevel ?? 50),
+              portrait:        c._data?.portrait ?? null,
+              icon:            c._data?.icon ?? null,
             };
           }),
         });
@@ -643,6 +674,9 @@ export class GameController {
     this.canvas.style.display = 'block';
 
     this.ui.update('battle', {
+      stageName:   stageData.name ?? '',
+      staminaCost: stageData.staminaCost ?? 10,
+      turn:        this.battle.turn ?? 1,
       team: activeTeam.map(c => ({
         charge:    this.battle.chargeMap[c.id] ?? 0,
         maxCharge: c.chargeNeeded ?? 15,
@@ -785,8 +819,9 @@ export class GameController {
         this.economy.checkQuest('dq_special', 1);
       }
 
-      // Update skill button charge bars in the DOM overlay
+      // Update skill button charge bars and turn counter in the DOM overlay
       this.ui.update('battle', {
+        turn: this.battle.turn ?? 1,
         team: this.battle.team.map(c => ({
           charge:    this.battle.chargeMap[c.id] ?? 0,
           maxCharge: c.chargeNeeded ?? 15,

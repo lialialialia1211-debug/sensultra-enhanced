@@ -197,6 +197,7 @@ export class UIManager {
       if (data.stamina !== undefined && data.maxStamina !== undefined) {
         stamVal.textContent = `${data.stamina}/${data.maxStamina}`;
       }
+      // Phase 2: countdown format "80/120 · +1 05:23" or "(MAX)"
       if (data.nextStaminaSecs !== undefined) {
         if (data.stamina >= data.maxStamina) {
           stamCountdown.textContent = ' (MAX)';
@@ -205,7 +206,7 @@ export class UIManager {
           const secs = data.nextStaminaSecs;
           const m = String(Math.floor(secs / 60)).padStart(2, '0');
           const s = String(secs % 60).padStart(2, '0');
-          stamCountdown.textContent = ` · 恢復中 ${m}:${s}`;
+          stamCountdown.textContent = ` · +1 ${m}:${s}`;
           stamCountdown.style.color = '#88BBFF';
         }
       }
@@ -319,14 +320,32 @@ export class UIManager {
     this._charStatATK = this._makeStatItem(statsRow, '攻擊','0');
     this._charStatRCV = this._makeStatItem(statsRow, '回復','0');
 
-    // Skills
+    // Phase 6: Normal attack section
+    const normalSection = this._createElement('div', 'detail-section', '', panel);
+    this._createElement('h4', 'detail-section-title', '普攻', normalSection);
+    this._charNormalSkillEl = this._createElement('p', 'detail-skill-text', '', normalSection);
+
+    // Phase 6: Super sense (special skill)
     const skillSection = this._createElement('div', 'detail-section', '', panel);
-    this._createElement('h4', 'detail-section-title', '技能', skillSection);
+    this._createElement('h4', 'detail-section-title', '超感技', skillSection);
     this._charSkillEl = this._createElement('p', 'detail-skill-text', '', skillSection);
 
+    // Phase 6: Leader skill
     const leaderSection = this._createElement('div', 'detail-section', '', panel);
     this._createElement('h4', 'detail-section-title', '隊長技', leaderSection);
-    this._charLeaderEl = this._createElement('p', 'detail-skill-text', '', leaderSection);
+    this._charLeaderNameEl = this._createElement('div', 'detail-skill-name', '', leaderSection);
+    this._charLeaderEl     = this._createElement('p',   'detail-skill-text', '', leaderSection);
+
+    // Phase 6: Intimacy level
+    const intimacyRow = this._createElement('div', 'detail-intimacy-row', '', panel);
+    this._createElement('span', 'detail-intimacy-label', '親密度：', intimacyRow);
+    this._charIntimacyEl = this._createElement('span', 'detail-intimacy-val', 'Lv.1', intimacyRow);
+
+    // Phase 6: Upgrade button (hidden by default)
+    this._charUpgradeBtn = this._createElement('button', 'btn-primary detail-upgrade-btn hidden', '升級', panel);
+    this._charUpgradeBtn.addEventListener('click', () => {
+      this._emit('character:upgrade', { char: this._currentDetailChar });
+    });
   }
 
   _makeStatItem(parent, label, value) {
@@ -342,6 +361,10 @@ export class UIManager {
       FIRE:'#FF4444',WATER:'#4488FF',WOOD:'#44BB44',
       LIGHT:'#FFDD44',DARK:'#AA44FF',HEART:'#FF88AA',
     };
+
+    // Track current char for upgrade button
+    this._currentDetailChar = char;
+
     this._charDetailName.textContent = char.name || '???';
 
     // Use portrait if available, otherwise colour block
@@ -363,12 +386,40 @@ export class UIManager {
 
     this._charDetailRarity.textContent = char.rarity || 'R';
     this._charDetailRarity.className   = `detail-rarity rarity-text-${(char.rarity||'r').toLowerCase()}`;
+
     if (this._charStatLv)  this._charStatLv.textContent  = char.level  || '1';
-    this._charStatHP.textContent       = char.hp     || '0';
-    this._charStatATK.textContent      = char.atk    || '0';
-    this._charStatRCV.textContent      = char.rcv    || '0';
-    this._charSkillEl.textContent      = char.skill  || '—';
-    this._charLeaderEl.textContent     = char.leader || '—';
+    this._charStatHP.textContent  = (char.hp  ?? 0).toLocaleString();
+    this._charStatATK.textContent = (char.atk ?? 0).toLocaleString();
+    this._charStatRCV.textContent = (char.rcv ?? 0).toLocaleString();
+
+    // Phase 6: normal attack
+    if (this._charNormalSkillEl) {
+      this._charNormalSkillEl.textContent = char.skillNormalName || char.skill || '—';
+    }
+
+    // Phase 6: super sense skill with charge info
+    this._charSkillEl.textContent = char.skillDesc || char.skill || '—';
+
+    // Phase 6: leader skill name + description
+    if (this._charLeaderNameEl) {
+      this._charLeaderNameEl.textContent = char.leaderName || '';
+    }
+    this._charLeaderEl.textContent = char.leader || '—';
+
+    // Phase 6: intimacy level
+    if (this._charIntimacyEl) {
+      this._charIntimacyEl.textContent = `Lv.${char.intimacyLevel ?? 1}`;
+    }
+
+    // Phase 6: upgrade button
+    if (this._charUpgradeBtn) {
+      if (char.canUpgrade) {
+        this._charUpgradeBtn.classList.remove('hidden');
+      } else {
+        this._charUpgradeBtn.classList.add('hidden');
+      }
+    }
+
     panel.classList.remove('hidden');
   }
 
@@ -534,15 +585,17 @@ export class UIManager {
     const stageNumLabel = stage.area === 0
       ? `教`
       : `${stage.area}-${stage.num}`;
-    this._createElement('span', 'stage-num',   stageNumLabel, info);
-    this._createElement('span', 'stage-name',  stage.name || '???', info);
+    this._createElement('span', 'stage-num', stageNumLabel, info);
+    // Phase 5: show ✓ next to stage name if cleared
+    const stageName = stage.cleared
+      ? `✓ ${stage.name || '???'}`
+      : (stage.name || '???');
+    this._createElement('span', 'stage-name', stageName, info);
     const stamLabel = (stage.stamina === 0 || stage.staminaCost === 0) ? '⚡免費' : `⚡${stage.stamina || stage.staminaCost || 10}`;
     this._createElement('span', 'stage-stam',  stamLabel, info);
 
     const meta = this._createElement('div', 'stage-meta', '', row);
-    if (stage.cleared) {
-      this._createElement('span', 'stage-cleared-badge', '✓', meta);
-    }
+    // Phase 5: only show first-clear reward if not yet claimed
     if (stage.firstClearGem && !stage.firstCleared) {
       this._createElement('span', 'stage-reward', `初通 💎${stage.firstClearGem}`, meta);
     }
@@ -565,6 +618,14 @@ export class UIManager {
 
     // DOM overlay (on top of canvas)
     const overlay = this._createElement('div', 'battle-overlay', '', screen.el);
+
+    // Phase 7: Top HUD bar — stage name + stamina cost
+    const topHud = this._createElement('div', 'battle-top-hud', '', overlay);
+    this._battleStageNameEl   = this._createElement('span', 'battle-hud-stage', '', topHud);
+    this._battleStaminaCostEl = this._createElement('span', 'battle-hud-stam', '', topHud);
+
+    // Phase 7: Turn counter (big, centred)
+    this._battleTurnEl = this._createElement('div', 'battle-turn-display', '', overlay);
 
     // Pause button
     const pauseBtn = this._createElement('button', 'btn-icon battle-pause', '⏸', overlay);
@@ -599,6 +660,17 @@ export class UIManager {
     this._pauseMenu = pauseMenu;
 
     screen.update = (data = {}) => {
+      // Phase 7: top HUD info
+      if (data.stageName !== undefined && this._battleStageNameEl) {
+        this._battleStageNameEl.textContent = data.stageName;
+      }
+      if (data.staminaCost !== undefined && this._battleStaminaCostEl) {
+        this._battleStaminaCostEl.textContent = `⚡${data.staminaCost}`;
+      }
+      if (data.turn !== undefined && this._battleTurnEl) {
+        this._battleTurnEl.textContent = `回合 ${data.turn}`;
+      }
+
       // Update skill buttons charge — hide slots beyond active team size
       if (data.team) {
         const activeCount = data.team.length;
@@ -730,15 +802,16 @@ export class UIManager {
       this._createElement('div', 'gacha-banner-img', p === 0 ? '常駐' : '限定', banner);
       this._createElement('p', 'gacha-banner-sub', p === 0 ? '基礎角色池' : '期間限定角色', banner);
 
-      // Item 14: Pity counter with progress bar
+      // Item 14 / Phase 4: Pity counter with gradient progress bar
       const pityWrap = this._createElement('div', 'gacha-pity-wrap', '', detail);
       const pity = this._createElement('div', 'gacha-pity', '', pityWrap);
-      this._createElement('span', 'gacha-pity-label', '保底計數：', pity);
-      const pityNum = this._createElement('span', 'gacha-pity-num', '0/80', pity);
+      this._createElement('span', 'gacha-pity-label', '距離保底：', pity);
+      const pityNum = this._createElement('span', 'gacha-pity-num', '80 抽', pity);
       const pityBar = this._createElement('div', 'gacha-pity-bar', '', pityWrap);
       const pityFill = this._createElement('div', 'gacha-pity-fill', '', pityBar);
       // store fill element reference
       detail._pityFill = pityFill;
+      detail._pityNum  = pityNum;
 
       // Buttons
       const btns = this._createElement('div', 'gacha-btns', '', detail);
@@ -759,7 +832,7 @@ export class UIManager {
     poolBtns[0].classList.add('active');
 
     this._gachaPoolDetails = poolDetails;
-    this._gachaPityNums    = poolDetails.map(d => d.querySelector('.gacha-pity-num'));
+    this._gachaPityNums    = poolDetails.map(d => d._pityNum ?? d.querySelector('.gacha-pity-num'));
 
     // Result panel
     const resultPanel = this._createElement('div', 'gacha-result hidden', '', screen.el);
@@ -778,15 +851,23 @@ export class UIManager {
     screen.update = (data = {}) => {
       if (data.pity !== undefined) {
         const poolIdx = data.pool ?? 0;
+        const remaining = Math.max(0, 80 - data.pity);
         if (this._gachaPityNums[poolIdx]) {
-          this._gachaPityNums[poolIdx].textContent = `${data.pity}/80`;
+          this._gachaPityNums[poolIdx].textContent = `${remaining} 抽`;
         }
-        // Item 14: update pity bar
+        // Phase 4: gradient progress bar, orange→red as pity fills
         const fill = poolDetails[poolIdx]?._pityFill;
         if (fill) {
           const pct = Math.min(1, data.pity / 80);
           fill.style.width = `${pct * 100}%`;
-          fill.style.background = pct > 0.875 ? '#FF4444' : pct > 0.5 ? '#FF8800' : '#4488FF';
+          // Gradient: blue → orange → red based on progress
+          if (pct > 0.875) {
+            fill.style.background = 'linear-gradient(90deg, #FF8800, #FF2200)';
+          } else if (pct > 0.5) {
+            fill.style.background = 'linear-gradient(90deg, #FF8800, #FFAA00)';
+          } else {
+            fill.style.background = 'linear-gradient(90deg, #4488FF, #FF8800)';
+          }
         }
       }
       if (data.results) {
@@ -803,11 +884,27 @@ export class UIManager {
     panel.classList.remove('hidden');
     grid.innerHTML = '';
 
+    // Remove any leftover flash overlay from previous pull
+    const oldFlash = panel.querySelector('.gacha-flash-overlay');
+    if (oldFlash) oldFlash.remove();
+
     const rarityClass = { SSR: 'rarity-ssr', SR: 'rarity-sr', R: 'rarity-r', N: 'rarity-n' };
     const typeColors  = {
       FIRE:'#FF4444',WATER:'#4488FF',WOOD:'#44BB44',
       LIGHT:'#FFDD44',DARK:'#AA44FF',HEART:'#FF88AA',
     };
+
+    const hasSSR = results.some(r => r.rarity === 'SSR');
+
+    // Phase 3: white flash on panel when SSR appears
+    if (hasSSR) {
+      const flash = this._createElement('div', 'gacha-flash-overlay', '', panel);
+      // Trigger animation on next frame
+      requestAnimationFrame(() => {
+        flash.classList.add('gacha-flash-active');
+        setTimeout(() => flash.remove(), 400);
+      });
+    }
 
     for (const char of results) {
       const card = this._createElement('div', `gacha-card ${rarityClass[char.rarity] || 'rarity-r'}`, '', grid);
@@ -829,6 +926,10 @@ export class UIManager {
       }
       this._createElement('div', 'gacha-card-rarity', char.rarity || 'R', card);
       this._createElement('div', 'gacha-card-name', (char.name || '???').substring(0, 4), card);
+      // Phase 3: SSR label above card
+      if (char.rarity === 'SSR') {
+        this._createElement('div', 'gacha-card-ssr-label', '★SSR★', card);
+      }
       if (char.isNew) {
         this._createElement('div', 'gacha-card-new', 'NEW', card);
       }
@@ -1183,22 +1284,25 @@ export class UIManager {
     this._toastTimeout = null;
   }
 
-  /** Show a toast notification. duration in ms (default 2500). */
-  showToast(message, duration = 2500) {
+  /**
+   * Show a toast notification.
+   * @param {string} message
+   * @param {number} duration in ms (default 2500)
+   * @param {'info'|'success'|'warn'|'error'} type for colour coding
+   */
+  showToast(message, duration = 2500, type = 'info') {
     clearTimeout(this._toastTimeout);
     clearTimeout(this._toastFadeTimeout);
     this._toastEl.textContent = message;
-    // Item 17: slide-in from bottom, then fade-out
-    this._toastEl.classList.remove('hidden', 'show', 'toast-exit');
+    // Phase 10: type-based colour classes
+    this._toastEl.className = `toast toast-${type}`;
     // Force reflow to restart animation
     void this._toastEl.offsetWidth;
     this._toastEl.classList.add('show');
     this._toastTimeout = setTimeout(() => {
-      // Fade out exit
       this._toastEl.classList.add('toast-exit');
       this._toastFadeTimeout = setTimeout(() => {
-        this._toastEl.classList.remove('show', 'toast-exit');
-        this._toastEl.classList.add('hidden');
+        this._toastEl.className = 'toast hidden';
       }, 300);
     }, duration);
   }
