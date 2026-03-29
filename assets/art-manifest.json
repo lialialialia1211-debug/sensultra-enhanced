@@ -1,0 +1,177 @@
+{
+  "project": "sensultra-enhanced",
+  "sources": ["plan-v2-deep-optimization.md", "document-1.md"],
+  "generated_date": "2026-03-29",
+  "style_prefix": "Japanese 2D anime illustration, elegant bishounen style, dark fantasy aesthetic with neon accent lighting, clean lineart, deep navy and midnight blue palette with vivid elemental color accents, dramatic chiaroscuro lighting, BL visual novel quality, atmospheric and mysterious mood",
+  "total_assets": 18,
+  "phases": [
+    {
+      "phase": 1,
+      "asset_count": 18,
+      "assets": [
+        {
+          "prompt": "Japanese 2D anime illustration, elegant bishounen style, dark fantasy aesthetic with neon accent lighting, clean lineart, deep navy and midnight blue palette with vivid elemental color accents, dramatic chiaroscuro lighting, BL visual novel quality, atmospheric and mysterious mood, full body character portrait, front-facing, centered, white background, tall handsome male warrior age 28, short messy silver-white hair, old scar across right eye, wearing deep crimson military combat coat with black armored underlayer, intense cold gaze, muscular lean build 188cm, fire elemental aura subtle red glow around hands, confident battle-ready stance",
+          "width": 1024,
+          "height": 1536,
+          "filename": "char_01_lanzeta.png",
+          "no_rembg": false,
+          "category": "character",
+          "notes": "蘭澤塔 SSR火屬 - 銀白短髮, 右眼舊傷疤, 深紅戰鬥外套, 188cm"
+        },
+        {
+          "prompt": "Japanese 2D anime illustration, elegant bishounen style, dark fantasy aesthetic with neon accent lighting, clean lineart, deep navy and midnight blue palette with vivid elemental color accents, dramatic chiaroscuro lighting, BL visual novel quality, atmospheric and mysterious mood, character portrait headshot, square crop, centered face, white background, handsome male age 28, short messy silver-white hair, old scar across right eye, intense cold golden eyes, wearing high collar crimson coat",
+          "width": 256,
+          "height": 256,
+          "filename": "char_01_lanzeta_icon.png",
+          "no_rembg": false,
+          "category": "character_icon",
+          "notes": "蘭澤塔 頭像"
+        },
+        {
+          "prompt": "Japanese 2D anime illustration, elegant bishounen style, dark fantasy aesthetic with neon accent lighting, clean lineart, deep navy and midnight blue palette with vivid elemental color accents, dramatic chiaroscuro lighting, BL visual novel quality, atmospheric and mysterious mood, full body character portrait, front-facing, centered, white background, very tall elegant male age 30, medium-length deep blue hair tied in low ponytail, deep ocean blue eyes with lazy knowing expression, wearing navy formal military uniform with silver epaulettes, graceful relaxed posture 197cm, water elemental aura subtle blue mist, aristocratic bearing with predatory charm",
+          "width": 1024,
+          "height": 1536,
+          "filename": "char_02_voltrei.png",
+          "no_rembg": false,
+          "category": "character",
+          "notes": "沃爾崔 SSR水屬 - 深藍束髮, 197cm, 漫不經心表情, 海軍制服"
+        },
+        {
+          "prompt": "Japanese 2D anime illustration, elegant bishounen style, dark fantasy aesthetic with neon accent lighting, clean lineart, deep navy and midnight blue palette with vivid elemental color accents, dramatic chiaroscuro lighting, BL visual novel quality, atmospheric and mysterious mood, character portrait headshot, square crop, centered face, white background, elegant male age 30, deep blue hair tied back, ocean blue eyes with lazy knowing smile, navy uniform with silver trim collar",
+          "width": 256,
+          "height": 256,
+          "filename": "char_02_voltrei_icon.png",
+          "no_rembg": false,
+          "category": "character_icon",
+          "notes": "沃爾崔 頭像"
+        },
+        {
+          "prompt": "Japanese 2D anime illustration, elegant bishounen style, dark fantasy aesthetic with neon accent lighting, clean lineart, deep navy and midnight blue palette with vivid elemental color accents, dramatic chiaroscuro lighting, BL visual novel quality, atmospheric and mysterious mood, full body character portrait, front-facing, centered, white background, handsome male age 26, long straight black hair reaching mid-back, gentle warm brown eyes like forest light, wearing earth-toned explorer vest over dark green shirt with dirt stains on hands, broad shoulders 178cm, wood elemental aura with faint green leaf particles, serene quiet expression, nature-connected aura",
+          "width": 1024,
+          "height": 1536,
+          "filename": "char_03_morira.png",
+          "no_rembg": false,
+          "category": "character",
+          "notes": "森羅輝 SSR木屬 - 長直黑髮, 178cm, 探索者背心, 手上泥土痕跡"
+        },
+        {
+          "prompt": "Japanese 2D anime illustration, elegant bishounen style, dark fantasy aesthetic with neon accent lighting, clean lineart, deep navy and midnight blue palette with vivid elemental color accents, dramatic chiaroscuro lighting, BL visual novel quality, atmospheric and mysterious mood, character portrait headshot, square crop, centered face, white background, male age 26, long straight black hair, gentle warm brown eyes, earth-toned collar, serene expression",
+          "width": 256,
+          "height": 256,
+          "filename": "char_03_morira_icon.png",
+          "no_rembg": false,
+          "category": "character_icon",
+          "notes": "森羅輝 頭像"
+        },
+        {
+          "prompt": "Japanese 2D anime illustration, elegant bishounen style, dark fantasy aesthetic with neon accent lighting, clean lineart, deep navy and midnight blue palette with vivid elemental color accents, dramatic chiaroscuro lighting, BL visual novel quality, atmospheric and mysterious mood, full body character portrait, front-facing, centered, white background, lean male age 25, short messy black hair, faint dark circles under sharp violet eyes, wearing oversized loose black hoodie and dark cargo pants, hands in pockets, 172cm, dark elemental aura with shadow wisps, dangerous lazy slouch posture, nihilistic smirk",
+          "width": 1024,
+          "height": 1536,
+          "filename": "char_04_yaya_zvan.png",
+          "no_rembg": false,
+          "category": "character",
+          "notes": "夜鴉·茲凡 SSR暗屬 - 短亂黑髮, 黑眼圈, 172cm, 寬鬆黑衣"
+        },
+        {
+          "prompt": "Japanese 2D anime illustration, elegant bishounen style, dark fantasy aesthetic with neon accent lighting, clean lineart, deep navy and midnight blue palette with vivid elemental color accents, dramatic chiaroscuro lighting, BL visual novel quality, atmospheric and mysterious mood, character portrait headshot, square crop, centered face, white background, male age 25, short messy black hair, dark circles under violet eyes, nihilistic smirk, black hoodie collar",
+          "width": 256,
+          "height": 256,
+          "filename": "char_04_yaya_zvan_icon.png",
+          "no_rembg": false,
+          "category": "character_icon",
+          "notes": "夜鴉·茲凡 頭像"
+        },
+        {
+          "prompt": "Japanese 2D anime illustration, elegant bishounen style, dark fantasy aesthetic with neon accent lighting, clean lineart, deep navy and midnight blue palette with vivid elemental color accents, dramatic chiaroscuro lighting, BL visual novel quality, atmospheric and mysterious mood, full body character portrait, front-facing, centered, white background, clean handsome young male age 22, short water-blue hair, clear bright blue eyes with quiet determination, wearing light blue and white cadet uniform with silver trim, slim build 175cm, water elemental aura with soft blue light, calm composed posture, protagonist aura",
+          "width": 1024,
+          "height": 1536,
+          "filename": "char_05_suqing.png",
+          "no_rembg": false,
+          "category": "character",
+          "notes": "蘇青 SR水屬 主角 - 水藍短髮, 175cm, 見習制服, 清秀"
+        },
+        {
+          "prompt": "Japanese 2D anime illustration, elegant bishounen style, dark fantasy aesthetic with neon accent lighting, clean lineart, deep navy and midnight blue palette with vivid elemental color accents, dramatic chiaroscuro lighting, BL visual novel quality, atmospheric and mysterious mood, character portrait headshot, square crop, centered face, white background, young male age 22, short water-blue hair, clear bright blue eyes, white and blue cadet uniform collar, calm gentle expression",
+          "width": 256,
+          "height": 256,
+          "filename": "char_05_suqing_icon.png",
+          "no_rembg": false,
+          "category": "character_icon",
+          "notes": "蘇青 頭像"
+        },
+        {
+          "prompt": "Japanese 2D anime illustration, elegant bishounen style, dark fantasy aesthetic with neon accent lighting, clean lineart, deep navy and midnight blue palette with vivid elemental color accents, dramatic chiaroscuro lighting, BL visual novel quality, atmospheric and mysterious mood, full body character portrait, front-facing, centered, white background, short energetic male age 19, spiky orange-red hair, fierce determined amber eyes with defiant expression, wearing red and black combat vest with arm guards, small but strong build 158cm, fire elemental sparks, competitive battle stance with fists clenched",
+          "width": 1024,
+          "height": 1536,
+          "filename": "char_06_airy.png",
+          "no_rembg": false,
+          "category": "character",
+          "notes": "艾理 SR火屬 - 短橘紅髮, 158cm, 不服輸表情"
+        },
+        {
+          "prompt": "Japanese 2D anime illustration, elegant bishounen style, dark fantasy aesthetic with neon accent lighting, clean lineart, deep navy and midnight blue palette with vivid elemental color accents, dramatic chiaroscuro lighting, BL visual novel quality, atmospheric and mysterious mood, full body character portrait, front-facing, centered, white background, handsome intellectual male age 27, golden wavy curly hair, warm amber eyes behind elegant thin-frame glasses, wearing pristine white medical officer uniform with gold buttons, holding data tablet, 180cm, light elemental soft golden glow, kind reassuring smile",
+          "width": 1024,
+          "height": 1536,
+          "filename": "char_07_philo.png",
+          "no_rembg": false,
+          "category": "character",
+          "notes": "菲洛·亞爾 SR光屬 - 金色捲髮, 眼鏡, 180cm, 白色制服"
+        },
+        {
+          "prompt": "Japanese 2D anime illustration, elegant bishounen style, dark fantasy aesthetic with neon accent lighting, clean lineart, deep navy and midnight blue palette with vivid elemental color accents, dramatic chiaroscuro lighting, BL visual novel quality, atmospheric and mysterious mood, full body character portrait, front-facing, centered, white background, alert watchful male age 24, deep purple medium-length hair falling over one side, sharp piercing grey eyes always scanning, wearing dark tactical stealth gear with muted purple accents, tense vigilant posture 183cm, dark elemental shadow wisps, expression of guarded suspicion",
+          "width": 1024,
+          "height": 1536,
+          "filename": "char_08_orltai.png",
+          "no_rembg": false,
+          "category": "character",
+          "notes": "奧爾泰 SR暗屬 - 深紫中長髮, 183cm, 戰術裝備, 銳利眼神"
+        },
+        {
+          "prompt": "Japanese 2D anime illustration, dark fantasy aesthetic, deep navy and midnight blue palette, atmospheric and mysterious mood, environment concept art, wide shot, atmospheric perspective, no characters, futuristic border city shrouded in eternal thin mist, crumbling skyscrapers mixed with rebuilt structures, glowing rift cracks in the sky showing another dimension, neon signs in Chinese characters, wet streets reflecting purple and blue lights, post-apocalyptic cyberpunk atmosphere, portrait orientation tall composition",
+          "width": 540,
+          "height": 960,
+          "filename": "bg_01_main_menu.png",
+          "no_rembg": true,
+          "category": "background",
+          "notes": "主畫面背景 - 曉城 (邊境都市, 薄霧籠罩, 裂縫殘光)"
+        },
+        {
+          "prompt": "Japanese 2D anime illustration, dark fantasy aesthetic, deep navy and midnight blue palette, atmospheric and mysterious mood, environment concept art, wide shot, atmospheric perspective, no characters, dark ancient forest with massive twisted trees, bioluminescent fungi on tree trunks glowing blue-green, thick fog rolling between roots, faint dimensional rifts glowing purple between branches, oppressive yet beautiful atmosphere, path leading deeper into darkness, portrait orientation tall composition",
+          "width": 540,
+          "height": 960,
+          "filename": "bg_02_dark_forest.png",
+          "no_rembg": true,
+          "category": "background",
+          "notes": "第一章背景 - 幽闇森林 (古老扭曲大樹, 生物發光菌, 濃霧)"
+        },
+        {
+          "prompt": "Japanese 2D anime illustration, dark fantasy aesthetic, deep navy palette, environment concept art, wide shot, no characters, military command center interior, holographic displays showing rift maps, dark metallic walls with blue accent lighting, tactical planning table in center, large windows showing misty cityscape outside, sleek futuristic military aesthetic, portrait orientation tall composition",
+          "width": 540,
+          "height": 960,
+          "filename": "bg_03_base_interior.png",
+          "no_rembg": true,
+          "category": "background",
+          "notes": "基地室內背景 - 裂縫管理局指揮中心"
+        },
+        {
+          "prompt": "Japanese 2D anime illustration, dark fantasy aesthetic, deep navy and midnight blue palette, dramatic lighting, environment concept art, wide shot, no characters, dark forest clearing at night, massive corrupted tree creature boss in silhouette with glowing green eyes and writhing vine tentacles, dimensional rift pulsing behind it, fallen leaves and debris floating upward, ominous atmosphere, battle arena feeling, portrait orientation tall composition",
+          "width": 540,
+          "height": 960,
+          "filename": "bg_04_boss_arena.png",
+          "no_rembg": true,
+          "category": "background",
+          "notes": "Boss 戰鬥背景 - 幽森主的巢穴 (腐化大樹怪, 裂縫脈動)"
+        },
+        {
+          "prompt": "Japanese 2D anime illustration, BL visual novel quality, dark fantasy aesthetic, dramatic cinematic lighting, key visual art, cinematic composition, epic scale, five handsome male characters standing together in dramatic poses, silver-haired warrior in crimson coat at center, blue-haired elegant man behind, black-haired nature boy to the side, dark-clothed mysterious figure in shadows, blue-haired protagonist in front, dimensional rift glowing in background sky, title card composition with space at top for logo, deep navy and vivid elemental color accents",
+          "width": 1920,
+          "height": 1080,
+          "filename": "key_01_main_visual.png",
+          "no_rembg": true,
+          "category": "key_visual",
+          "notes": "主視覺圖 - 5位主角群像, 裂縫背景, 標題卡位置"
+        }
+      ]
+    }
+  ]
+}

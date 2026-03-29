@@ -1,0 +1,12 @@
+node_modules/
+test-*.js
+debug-*.png
+verify-*.png
+clean-*.png
+art-test-*.png
+final-*.png
+fix-*.png
+gameplay-*.png
+screenshot-*.png
+testfix-*.png
+*.output

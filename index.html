@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=540, initial-scale=1.0, user-scalable=no">
+  <title>超感穿梭 Enhanced</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="game-container">
+    <canvas id="game-canvas"></canvas>
+    <!-- UI screens are created dynamically by UIManager -->
+  </div>
+  <script type="module">
+    import { GameController } from './js/main.js';
+    const game = new GameController();
+    game.init();
+    window.game = game; // Debug: access via console → window.game
+  </script>
+</body>
+</html>
